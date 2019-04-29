@@ -25,13 +25,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-<!--            <version>${spring.boot.version}</version>-->
+            <!--            <version>${spring.boot.version}</version>-->
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
-<!--            <version>${spring.version}</version>-->
+            <!--            <version>${spring.version}</version>-->
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -42,6 +42,10 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>

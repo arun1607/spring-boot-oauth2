@@ -1,5 +1,7 @@
 package com.learning.amit.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,6 +24,18 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
 
     public AppConfig(final DataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    @Autowired
+    public void setApplicationContext(ApplicationContext context) {
+        super.setApplicationContext(context);
+        AuthenticationManagerBuilder globalAuthBuilder = context
+                .getBean(AuthenticationManagerBuilder.class);
+        try {
+            globalAuthBuilder.userDetailsService(userDetailsService);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

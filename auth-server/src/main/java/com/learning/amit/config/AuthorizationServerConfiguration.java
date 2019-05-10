@@ -4,6 +4,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -29,16 +30,18 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final SecurityProperties securityProperties;
+    private final UserDetailsService userDetailsService;
 
     private JwtAccessTokenConverter jwtAccessTokenConverter;
     private TokenStore tokenStore;
 
     public AuthorizationServerConfiguration(final DataSource dataSource, final PasswordEncoder passwordEncoder,
-                                            final AuthenticationManager authenticationManager, final SecurityProperties securityProperties) {
+                                            final AuthenticationManager authenticationManager, final SecurityProperties securityProperties, UserDetailsService userDetailsService) {
         this.dataSource = dataSource;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.securityProperties = securityProperties;
+        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -46,6 +49,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         if (tokenStore == null) {
             tokenStore = new JwtTokenStore(jwtAccessTokenConverter());
         }
+
         return tokenStore;
     }
 
@@ -81,7 +85,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Override
     public void configure(final AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints.authenticationManager(this.authenticationManager)
+        endpoints.authenticationManager(this.authenticationManager).userDetailsService(userDetailsService)
                 .accessTokenConverter(jwtAccessTokenConverter())
                 .tokenStore(tokenStore());
     }

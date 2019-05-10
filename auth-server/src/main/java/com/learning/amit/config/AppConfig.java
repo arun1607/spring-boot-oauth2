@@ -26,18 +26,6 @@ public class AppConfig extends WebSecurityConfigurerAdapter {
         this.dataSource = dataSource;
     }
 
-    @Autowired
-    public void setApplicationContext(ApplicationContext context) {
-        super.setApplicationContext(context);
-        AuthenticationManagerBuilder globalAuthBuilder = context
-                .getBean(AuthenticationManagerBuilder.class);
-        try {
-            globalAuthBuilder.userDetailsService(userDetailsService);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService())
